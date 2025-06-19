@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "@/pages/home.page";
 import Test from "@/pages/test.page";
+import SilhouettesPage from "@/pages/silhouettes.page";
+import SilhouetteEditPage from "@/pages/silhouette-edit.page";
 
 function App() {
   return (
@@ -8,6 +10,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/test" element={<Test />} />
+        <Route path="/silhouettes" element={<SilhouettesPage />} />
+        <Route
+          path="/silhouettes/:slug/edit"
+          element={<SilhouetteEditPage />}
+        />
       </Routes>
     </div>
   );

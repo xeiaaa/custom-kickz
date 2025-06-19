@@ -16,7 +16,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center md:justify-start mt-8">
             <Button asChild size="lg" className="text-lg px-8 py-6">
-              <Link to="/customize">Start Customizing</Link>
+              <Link to="/silhouettes">Start Customizing</Link>
             </Button>
             <Button
               asChild
