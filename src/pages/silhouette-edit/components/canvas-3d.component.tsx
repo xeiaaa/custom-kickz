@@ -4,34 +4,14 @@ import { OrbitControls } from "@react-three/drei";
 import { Suspense } from "react";
 import { Loader3D } from "./loader-3d.component";
 import { ShoeModel } from "./shoe-model.component";
-import { Button } from "@/components/ui/button";
-import { useSilhouetteEditor } from "../silhouette.context";
-import * as THREE from "three";
 
 interface Canvas3DProps {
   modelUrl: string;
 }
 
 export function Canvas3D({ modelUrl }: Canvas3DProps) {
-  const { materials } = useSilhouetteEditor();
-
   return (
     <div className="flex-1 relative">
-      <Button
-        className="absolute top-4 right-4 z-10"
-        onClick={() => {
-          console.log(materials);
-          materials.forEach((material) => {
-            (material as THREE.MeshStandardMaterial).color.set(
-              Math.random(),
-              Math.random(),
-              Math.random()
-            );
-          });
-        }}
-      >
-        Top Right
-      </Button>
       <Canvas
         camera={{ position: [0, 0, 5], fov: 50 }}
         style={{
@@ -42,10 +22,17 @@ export function Canvas3D({ modelUrl }: Canvas3DProps) {
           args={[0xffffff, 0x444444, 1.2]}
           position={[0, 20, 0]}
         />
-        <ambientLight intensity={1.5} color={"#ffffff"} />
+        <ambientLight intensity={0.5} color={"#ffffff"} />
         <directionalLight
-          position={[10, 20, 10]}
-          intensity={3}
+          position={[5, 5, 5]}
+          intensity={1.2}
+          color={"#ffffff"}
+          castShadow
+        />
+
+        <directionalLight
+          position={[-5, 5, -5]} // opposite side
+          intensity={1.2}
           color={"#ffffff"}
           castShadow
         />

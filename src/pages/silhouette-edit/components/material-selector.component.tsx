@@ -22,7 +22,7 @@ export function MaterialSelector({
   const { materials } = useSilhouetteEditor();
 
   return (
-    <div className="w-full max-w-md mx-auto mt-4 mb-8">
+    <div className="w-full">
       <Select value={selectedMaterial} onValueChange={onMaterialChange}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select material" />
