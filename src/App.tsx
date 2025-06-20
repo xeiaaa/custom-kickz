@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "@/pages/home.page";
-import Test from "@/pages/test.page";
-import SilhouettesPage from "@/pages/silhouettes.page";
-import SilhouetteEditPage from "@/pages/silhouette-edit.page";
+import Home from "@/pages/home/home.page";
+import Test from "@/pages/test/test.page";
+import SilhouettesPage from "@/pages/silhouettes/silhouettes.page";
+import SilhouetteEditPage from "@/pages/silhouette-edit/silhouette-edit.page";
 
 function App() {
   return (
