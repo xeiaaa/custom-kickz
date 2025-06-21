@@ -72,9 +72,6 @@ export default function SilhouettesPage() {
                   >
                     Edit & Customize
                   </Link>
-                  <div className="text-xs text-zinc-400 mt-2">
-                    Added: {new Date(silhouette.createdAt).toLocaleDateString()}
-                  </div>
                 </div>
               ))
             ) : (

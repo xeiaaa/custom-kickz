@@ -5,11 +5,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 interface MaterialSelectorProps {
   selectedMaterial: string;
   onMaterialChange: (value: string) => void;
+  silhouetteName?: string;
 }
 
 export function MaterialSelector({
   selectedMaterial,
   onMaterialChange,
+  silhouetteName,
 }: MaterialSelectorProps) {
   const { materials } = useSilhouetteEditor();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -49,6 +51,12 @@ export function MaterialSelector({
     }
   };
 
+  const getPartImageUrl = (partName: string) => {
+    // Convert part name to lowercase and replace spaces/dots with hyphens for URL
+    const formattedPartName = partName.toLowerCase();
+    return `https://custom-kickz.s3.ap-southeast-1.amazonaws.com/parts/${silhouetteName}/${formattedPartName}.png`;
+  };
+
   return (
     <div className="w-full pt-4">
       <div className="relative">
@@ -74,8 +82,25 @@ export function MaterialSelector({
                   : "bg-gray-100 dark:bg-zinc-800"
               }`}
             >
-              <div className="w-24 h-24 bg-gray-200 dark:bg-zinc-700 rounded-md flex items-center justify-center">
-                <span className="text-xs text-gray-500">Image</span>
+              <div className="w-24 h-24 bg-gray-200 dark:bg-zinc-700 rounded-md flex items-center justify-center overflow-hidden">
+                <img
+                  src={getPartImageUrl(mat.name || mat.uuid)}
+                  alt={mat.name || mat.uuid}
+                  className="w-full h-full object-cover"
+                  style={{ objectFit: "cover" }}
+                  onError={(e) => {
+                    // Fallback to placeholder if image fails to load
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = "none";
+                    const parent = target.parentElement;
+                    if (parent) {
+                      const fallback = document.createElement("span");
+                      fallback.className = "text-xs text-gray-500";
+                      fallback.textContent = "Image";
+                      parent.appendChild(fallback);
+                    }
+                  }}
+                />
               </div>
               <span
                 className={`text-xs font-medium ${
