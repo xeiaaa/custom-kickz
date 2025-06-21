@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useSilhouetteEditor } from "../silhouette.context";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
