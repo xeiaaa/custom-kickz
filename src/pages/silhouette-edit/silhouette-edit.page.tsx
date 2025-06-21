@@ -18,6 +18,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { ImageSearchSidebar } from "./components/image-search-sidebar.component";
 
 const apiUrl = import.meta.env.VITE_BACKEND_API_URL;
 
@@ -45,6 +46,7 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
   ]);
   const [isSaveColorwayOpen, setIsSaveColorwayOpen] = React.useState(false);
   const [colorwayName, setColorwayName] = React.useState("");
+  const [isImageSearchOpen, setIsImageSearchOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (materialsMap.size > 0) {
@@ -56,6 +58,31 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
   }, [materialsMap]);
 
   const handleRandomize = () => {
+    // const nezuko: Record<string, string> = {
+    //   "back.down": "#ef0000", // Soft pink
+    //   "back.top": "#ef0000", // Hello Kitty red bow
+    //   "back.little.part": "#ef0000", // White leather
+    //   "back.mid": "#ef0000",
+    //   inserts: "#ef0000",
+    //   central: "#ef0000",
+    //   "down.with.holes": "#ef0000",
+    //   "toe.cap": "#ef0000", // Deeper pink/red
+    //   vamp: "#ef0000",
+    //   "label.back": "#ef0000", // Pale pink label
+    //   "label.front": "#ef0000", // Red bow detail
+    //   logo: "#0000ff",
+    //   sole: "#ef0000", // Light pink midsole
+    //   "middle.with.holes": "#ef0000",
+    //   swoosh: "#ff00ff",
+    //   "sole.logo": "#ef0000", // Soft pink outsole
+    //   seams: "#0000ff",
+    //   shoelace: "#0000ff",
+    //   tongue: "#ef0000",
+    //   "top.round": "#ef0000",
+    //   "under.feet": "#ef0000",
+    //   "under.sole.plate": "#ef0000",
+    // };
+
     const nezuko: Record<string, string> = {
       "back.down": "#F99FC9", // Soft pink
       "back.top": "#E75480", // Hello Kitty red bow
@@ -80,6 +107,7 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
       "under.feet": "#FFB6C1",
       "under.sole.plate": "#FFB6C1",
     };
+
     materialsMap.forEach((material) => {
       const color = nezuko[material.name];
       if (color) {
@@ -138,6 +166,12 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
               onRandomize={handleRandomize}
             />
             <div className="flex flex-col space-y-4">
+              <Button
+                variant="outline"
+                onClick={() => setIsImageSearchOpen(true)}
+              >
+                Generate Theme
+              </Button>
               <Button variant="outline">Save as Draft</Button>
               <Button onClick={() => setIsSaveColorwayOpen(true)}>
                 Save Colorway
@@ -146,6 +180,11 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
           </div>
         </div>
       </div>
+      <ImageSearchSidebar
+        isOpen={isImageSearchOpen}
+        onOpenChange={setIsImageSearchOpen}
+        silhouetteName={silhouette.name}
+      />
       <Dialog open={isSaveColorwayOpen} onOpenChange={setIsSaveColorwayOpen}>
         <DialogContent>
           <DialogHeader>
