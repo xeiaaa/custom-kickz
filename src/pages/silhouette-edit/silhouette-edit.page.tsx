@@ -10,6 +10,14 @@ import {
 } from "./silhouette.context";
 import { ColorPalette } from "./components/color-palette.component";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 const apiUrl = import.meta.env.VITE_BACKEND_API_URL;
 
@@ -35,77 +43,48 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
     "#00ffff",
     "#ff00ff",
   ]);
+  const [isSaveColorwayOpen, setIsSaveColorwayOpen] = React.useState(false);
+  const [colorwayName, setColorwayName] = React.useState("");
 
   React.useEffect(() => {
-    if (materialsMap.size > 0 && !selectedMaterial) {
+    if (materialsMap.size > 0) {
       const firstMaterialName = Array.from(materialsMap.keys())[0];
-      setSelectedMaterial(firstMaterialName);
+      if (selectedMaterial !== firstMaterialName) {
+        setSelectedMaterial(firstMaterialName);
+      }
     }
-  }, [materialsMap, selectedMaterial]);
-
-  function hexToRgba(hex: string): [number, number, number, number] {
-    // Remove # if present
-    hex = hex.replace("#", "");
-
-    // Parse based on length
-    if (hex.length === 6) {
-      const r = parseInt(hex.slice(0, 2), 16) / 255;
-      const g = parseInt(hex.slice(2, 4), 16) / 255;
-      const b = parseInt(hex.slice(4, 6), 16) / 255;
-      return [r, g, b, 1];
-    } else if (hex.length === 8) {
-      const r = parseInt(hex.slice(0, 2), 16) / 255;
-      const g = parseInt(hex.slice(2, 4), 16) / 255;
-      const b = parseInt(hex.slice(4, 6), 16) / 255;
-      const a = parseInt(hex.slice(6, 8), 16) / 255;
-      return [r, g, b, a];
-    } else {
-      throw new Error(`Invalid hex color: ${hex}`);
-    }
-  }
-
-  function convertColorMap(
-    hexMap: Record<string, string>
-  ): Record<string, [number, number, number, number]> {
-    const result: Record<string, [number, number, number, number]> = {};
-
-    for (const key in hexMap) {
-      result[key] = hexToRgba(hexMap[key]);
-    }
-
-    return result;
-  }
+  }, [materialsMap]);
 
   const handleRandomize = () => {
-    const nezuko = {
-      "back.down": "#D4A373",
-      "back.top": "#D4A373",
-      "back.little.part": "#D4A373",
-      "back.mid": "#D4A373",
-      inserts: "#F2C14E",
-      central: "#F2C14E",
-      "down.with.holes": "#F2C14E",
-      "toe.cap": "#8B6430",
-      vamp: "#D4A373",
-      "label.back": "#F2C14E",
-      "label.front": "#8B6430",
-      logo: "#8B6430",
-      sole: "#F2C14E",
-      "middle.with.holes": "#D4A373",
-      swoosh: "#8B6430",
-      "sole.logo": "#3A3845",
-      seams: "#8B6430",
-      shoelace: "#3A3845",
-      tongue: "#F2C14E",
-      "top.round": "#8B6430",
-      "under.feet": "#3A3845",
-      "under.sole.plate": "#3A3845",
+    const nezuko: Record<string, string> = {
+      "back.down": "#F99FC9", // Soft pink
+      "back.top": "#E75480", // Hello Kitty red bow
+      "back.little.part": "#FFFFFF", // White leather
+      "back.mid": "#F99FC9",
+      inserts: "#FFFFFF",
+      central: "#FFFFFF",
+      "down.with.holes": "#F99FC9",
+      "toe.cap": "#E75480", // Deeper pink/red
+      vamp: "#FFFFFF",
+      "label.back": "#FEEAEA", // Pale pink label
+      "label.front": "#E75480", // Red bow detail
+      logo: "#E75480",
+      sole: "#FEEAEA", // Light pink midsole
+      "middle.with.holes": "#F99FC9",
+      swoosh: "#E75480",
+      "sole.logo": "#FFB6C1", // Soft pink outsole
+      seams: "#E75480",
+      shoelace: "#FFB6C1",
+      tongue: "#FFFFFF",
+      "top.round": "#F99FC9",
+      "under.feet": "#FFB6C1",
+      "under.sole.plate": "#FFB6C1",
     };
-
     materialsMap.forEach((material) => {
-      (material as THREE.MeshStandardMaterial).color.set(
-        ...convertColorMap(nezuko)[material.name]
-      );
+      const color = nezuko[material.name];
+      if (color) {
+        (material as THREE.MeshStandardMaterial).color.set(color);
+      }
     });
   };
 
@@ -126,31 +105,75 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
     }
   };
 
+  const handleSaveColorway = () => {
+    console.log("Saving colorway:", colorwayName);
+    setIsSaveColorwayOpen(false);
+    setColorwayName("");
+  };
+
   return (
-    <div className="w-full h-screen bg-gradient-to-br from-white to-gray-100 dark:from-zinc-900 dark:to-zinc-800 flex flex-col">
-      <Canvas3D modelUrl={silhouette.url} />
-      <div className="w-full p-4 border-t border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950">
-        <div className="max-w-md mx-auto space-y-4">
+    <div className="w-full h-screen bg-gradient-to-br from-gray-50 to-gray-200 dark:from-zinc-900 dark:to-zinc-800 flex flex-col">
+      <div className="flex-grow relative h-0">
+        <div className="absolute top-8 left-8 z-10 pointer-events-none">
+          <h1 className="text-4xl font-bold text-zinc-800 dark:text-white mix-blend-difference">
+            {silhouette.name}
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 mix-blend-difference">
+            Customize your silhouette
+          </p>
+        </div>
+        <Canvas3D modelUrl={silhouette.url} />
+      </div>
+      <div className="w-full bg-white dark:bg-zinc-950 border-t border-gray-200 dark:border-zinc-800 px-6 pt-2 pb-6 shadow-lg">
+        <div className="flex flex-col gap-4">
           <MaterialSelector
             selectedMaterial={selectedMaterial}
             onMaterialChange={setSelectedMaterial}
           />
-          <ColorPalette
-            colors={colors}
-            onColorSelect={handleColorSelect}
-            onAddColor={handleAddColor}
-          />
-          <div className="pt-4 border-t border-gray-200 dark:border-zinc-700">
-            <Button
-              onClick={handleRandomize}
-              variant="outline"
-              className="w-full"
-            >
-              Randomize Colors
-            </Button>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <ColorPalette
+              colors={colors}
+              onColorSelect={handleColorSelect}
+              onAddColor={handleAddColor}
+              onRandomize={handleRandomize}
+            />
+            <div className="flex flex-col space-y-4">
+              <Button variant="outline">Save as Draft</Button>
+              <Button onClick={() => setIsSaveColorwayOpen(true)}>
+                Save Colorway
+              </Button>
+            </div>
           </div>
         </div>
       </div>
+      <Dialog open={isSaveColorwayOpen} onOpenChange={setIsSaveColorwayOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Save Colorway</DialogTitle>
+            <DialogDescription>
+              Enter a name for your new colorway to save it for later use.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <input
+              type="text"
+              value={colorwayName}
+              onChange={(e) => setColorwayName(e.target.value)}
+              className="w-full p-2 border rounded-md dark:bg-zinc-700 dark:text-white"
+              placeholder="e.g., Summer Vibes"
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsSaveColorwayOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleSaveColorway}>Submit</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

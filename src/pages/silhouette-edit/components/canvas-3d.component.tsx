@@ -11,12 +11,13 @@ interface Canvas3DProps {
 
 export function Canvas3D({ modelUrl }: Canvas3DProps) {
   return (
-    <div className="flex-1 relative">
+    <div className="w-full h-full relative">
       <Canvas
         camera={{ position: [0, 0, 5], fov: 50 }}
         style={{
           background: "linear-gradient(120deg, #f8fafc 0%, #f1f5f9 100%)",
         }}
+        className="w-full h-full"
       >
         <hemisphereLight
           args={[0xffffff, 0x444444, 1.2]}

@@ -1,0 +1,160 @@
+{
+  "designSystem": {
+    "name": "3D Sneaker Preview UI",
+    "style": {
+      "theme": "Minimalist",
+      "background": {
+        "primary": "#f9f9f9",
+        "secondary": "#1a1a1a"
+      },
+      "typography": {
+        "fontFamily": "Inter, sans-serif",
+        "heading": {
+          "fontWeight": 700,
+          "fontSize": "2.5rem",
+          "lineHeight": "120%",
+          "color": "#111"
+        },
+        "body": {
+          "fontWeight": 400,
+          "fontSize": "1rem",
+          "lineHeight": "150%",
+          "color": "#444"
+        },
+        "button": {
+          "fontWeight": 600,
+          "fontSize": "0.9rem",
+          "textTransform": "uppercase"
+        }
+      },
+      "buttons": {
+        "primary": {
+          "backgroundColor": "#111",
+          "textColor": "#fff",
+          "borderRadius": "8px",
+          "padding": "12px 20px",
+          "hover": {
+            "backgroundColor": "#333"
+          }
+        }
+      },
+      "cards": {
+        "background": "#fff",
+        "borderRadius": "20px",
+        "boxShadow": "0px 8px 24px rgba(0, 0, 0, 0.05)",
+        "padding": "24px"
+      },
+      "icons": {
+        "style": "minimal line icons",
+        "color": "#999",
+        "size": "16px"
+      }
+    },
+    "layout": {
+      "grid": {
+        "columns": 2,
+        "gutter": "40px"
+      },
+      "sections": [
+        {
+          "name": "Sidebar",
+          "width": "30%",
+          "alignment": "left",
+          "components": [
+            "VerticalTabs",
+            "Heading",
+            "DescriptionText",
+            "SizeSelector",
+            "SizeGuideTable",
+            "BuyNowButton"
+          ]
+        },
+        {
+          "name": "3DViewer",
+          "width": "70%",
+          "alignment": "center",
+          "components": [
+            "CanvasContainer",
+            "NavigationButtons",
+            "360Toggle"
+          ]
+        }
+      ]
+    },
+    "components": {
+      "VerticalTabs": {
+        "itemStyle": {
+          "width": "64px",
+          "height": "64px",
+          "borderRadius": "12px",
+          "border": "1px solid #ddd",
+          "marginBottom": "16px"
+        },
+        "activeState": {
+          "border": "2px solid #000"
+        }
+      },
+      "SizeSelector": {
+        "type": "pill-buttons",
+        "gap": "8px",
+        "style": {
+          "background": "#eee",
+          "borderRadius": "999px",
+          "padding": "8px 16px",
+          "fontWeight": "500"
+        },
+        "activeState": {
+          "background": "#111",
+          "color": "#fff"
+        }
+      },
+      "SizeGuideTable": {
+        "columns": [
+          "Size",
+          "Foot Length"
+        ],
+        "cellPadding": "12px 16px",
+        "fontSize": "0.9rem",
+        "borderStyle": "none",
+        "highlight": {
+          "fontWeight": "600"
+        }
+      },
+      "3DViewer": {
+        "canvas": {
+          "background": "#1a1a1a",
+          "objectCenter": true,
+          "objectScale": "fit"
+        },
+        "navigation": {
+          "buttons": [
+            "Prev",
+            "Next"
+          ],
+          "placement": "bottom",
+          "style": {
+            "fontSize": "0.8rem",
+            "color": "#ccc"
+          }
+        },
+        "rotationControl": {
+          "type": "360 scrubber",
+          "style": "minimal dot"
+        }
+      }
+    },
+    "interaction": {
+      "hoverEffects": {
+        "buttons": {
+          "transition": "0.3s ease",
+          "scale": "1.02"
+        }
+      },
+      "3DModel": {
+        "interactionType": "orbitControls",
+        "autoRotate": false,
+        "lighting": "even hemisphere with shadow softness"
+      }
+    }
+  }
+}
