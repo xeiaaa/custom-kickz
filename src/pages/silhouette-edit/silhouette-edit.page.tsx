@@ -34,19 +34,32 @@ interface Silhouette {
 function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
   const [selectedMaterial, setSelectedMaterial] = React.useState<string>("");
   const { materialsMap } = useSilhouetteEditor();
-  const [colors, setColors] = React.useState<string[]>([
-    "#000000",
-    "#ffffff",
-    "#ff0000",
-    "#00ff00",
-    "#0000ff",
-    "#ffff00",
-    "#00ffff",
-    "#ff00ff",
-  ]);
+  const [colors, setColors] = React.useState<string[]>([]);
   const [isSaveColorwayOpen, setIsSaveColorwayOpen] = React.useState(false);
   const [colorwayName, setColorwayName] = React.useState("");
   const [isImageSearchOpen, setIsImageSearchOpen] = React.useState(false);
+  const [colorUpdateTrigger, setColorUpdateTrigger] = React.useState(0);
+
+  // Extract initial colors from materials when they are first loaded
+  React.useEffect(() => {
+    if (materialsMap.size > 0 && colors.length === 0) {
+      const initialColors = new Set<string>();
+
+      // Always include black and white
+      initialColors.add("#000000");
+      initialColors.add("#ffffff");
+
+      materialsMap.forEach((material) => {
+        if (material instanceof THREE.MeshStandardMaterial) {
+          const color = material.color;
+          const hexColor = "#" + color.getHexString();
+          initialColors.add(hexColor);
+        }
+      });
+
+      setColors(Array.from(initialColors));
+    }
+  }, [materialsMap, colors.length]);
 
   React.useEffect(() => {
     if (materialsMap.size > 0) {
@@ -114,6 +127,8 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
         (material as THREE.MeshStandardMaterial).color.set(color);
       }
     });
+    // Trigger a re-render to update the color indicator
+    setColorUpdateTrigger((prev) => prev + 1);
   };
 
   const handleColorSelect = (color: string) => {
@@ -124,19 +139,50 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
     const material = materialsMap.get(selectedMaterial);
     if (material) {
       (material as THREE.MeshStandardMaterial).color.set(color);
+      // Trigger a re-render to update the color indicator
+      setColorUpdateTrigger((prev) => prev + 1);
     }
   };
 
   const handleAddColor = (color: string) => {
-    if (!colors.includes(color)) {
-      setColors([...colors, color]);
+    const lowerCaseColor = color.toLowerCase();
+    if (!colors.includes(lowerCaseColor)) {
+      setColors([...colors, lowerCaseColor]);
     }
   };
+
+  // Get the current material's color for highlighting in the palette
+  const currentMaterialColor = React.useMemo((): string | undefined => {
+    if (!selectedMaterial) return undefined;
+    const material = materialsMap.get(selectedMaterial);
+    if (material instanceof THREE.MeshStandardMaterial) {
+      return "#" + material.color.getHexString();
+    }
+    return undefined;
+  }, [selectedMaterial, materialsMap, colorUpdateTrigger, colors]);
 
   const handleSaveColorway = () => {
     console.log("Saving colorway:", colorwayName);
     setIsSaveColorwayOpen(false);
     setColorwayName("");
+  };
+
+  // Handle color updates from image search/generate theme
+  const handleColorsUpdated = (newColors: string[]) => {
+    const uniqueColors = new Set<string>();
+
+    // Always include black and white
+    uniqueColors.add("#000000");
+    uniqueColors.add("#ffffff");
+
+    // Add all unique colors from the generated theme
+    newColors.forEach((color) => {
+      uniqueColors.add(color.toLowerCase());
+    });
+
+    setColors(Array.from(uniqueColors));
+    // Trigger a re-render to update the color indicator
+    setColorUpdateTrigger((prev) => prev + 1);
   };
 
   return (
@@ -164,6 +210,7 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
               onColorSelect={handleColorSelect}
               onAddColor={handleAddColor}
               onRandomize={handleRandomize}
+              selectedColor={currentMaterialColor}
             />
             <div className="flex flex-col space-y-4">
               <Button
@@ -184,6 +231,7 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
         isOpen={isImageSearchOpen}
         onOpenChange={setIsImageSearchOpen}
         silhouetteName={silhouette.name}
+        onColorsUpdated={handleColorsUpdated}
       />
       <Dialog open={isSaveColorwayOpen} onOpenChange={setIsSaveColorwayOpen}>
         <DialogContent>

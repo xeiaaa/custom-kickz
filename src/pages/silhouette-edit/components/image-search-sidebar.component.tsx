@@ -35,6 +35,7 @@ interface ImageSearchSidebarProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   silhouetteName: string;
+  onColorsUpdated?: (newColors: string[]) => void;
 }
 
 interface GoogleImage {
@@ -190,6 +191,7 @@ export function ImageSearchSidebar({
   isOpen,
   onOpenChange,
   silhouetteName,
+  onColorsUpdated,
 }: ImageSearchSidebarProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [isGeneratingColorway, setIsGeneratingColorway] = useState(false);
@@ -261,6 +263,11 @@ export function ImageSearchSidebar({
 
       // Close the sidebar after successful generation
       onOpenChange(false);
+
+      if (onColorsUpdated) {
+        const newColors = Object.values(colorway);
+        onColorsUpdated(newColors);
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to generate colorway"

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 
 interface ColorPaletteProps {
   colors: string[];
+  selectedColor?: string;
   onColorSelect: (color: string) => void;
   onAddColor: (color: string) => void;
   onRandomize: () => void;
@@ -10,6 +11,7 @@ interface ColorPaletteProps {
 
 export function ColorPalette({
   colors,
+  selectedColor,
   onColorSelect,
   onAddColor,
   onRandomize,
@@ -32,15 +34,22 @@ export function ColorPalette({
       </div>
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex flex-wrap items-center gap-3">
-          {colors.map((color) => (
-            <button
-              key={color}
-              className="w-8 h-8 rounded-full border-2 border-white dark:border-zinc-900 shadow-md transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-gray-100 dark:focus:ring-offset-zinc-800"
-              style={{ backgroundColor: color }}
-              onClick={() => onColorSelect(color)}
-              aria-label={`Select color ${color}`}
-            />
-          ))}
+          {colors.map((color) => {
+            const isSelected = selectedColor === color;
+            return (
+              <button
+                key={color}
+                className={`w-8 h-8 rounded-full border-2 shadow-md transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-gray-100 dark:focus:ring-offset-zinc-800 ${
+                  isSelected
+                    ? "border-blue-500 ring-2 ring-blue-500 ring-offset-2"
+                    : "border-white dark:border-zinc-900"
+                }`}
+                style={{ backgroundColor: color }}
+                onClick={() => onColorSelect(color)}
+                aria-label={`Select color ${color}`}
+              />
+            );
+          })}
         </div>
         <div className="flex items-center gap-2 pt-2 border-l border-gray-200 dark:border-zinc-700 pl-4">
           <input
