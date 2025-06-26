@@ -35,6 +35,14 @@ export function Header() {
             >
               Silhouettes
             </Link>
+            <SignedIn>
+              <Link
+                to="/my-colorways"
+                className="text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              >
+                My Colorways
+              </Link>
+            </SignedIn>
           </nav>
 
           {/* Authentication */}

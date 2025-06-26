@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import * as THREE from "three";
 import { Canvas3D } from "./components/canvas-3d.component";
 import { MaterialSelector } from "./components/material-selector.component";
@@ -19,6 +19,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { ImageSearchSidebar } from "./components/image-search-sidebar.component";
+import { useAxios } from "@/lib/useAxios";
 
 const apiUrl = import.meta.env.VITE_BACKEND_API_URL;
 
@@ -45,6 +46,18 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
   const [colorwayName, setColorwayName] = React.useState("");
   const [isImageSearchOpen, setIsImageSearchOpen] = React.useState(false);
   const [colorUpdateTrigger, setColorUpdateTrigger] = React.useState(0);
+  const axios = useAxios();
+  const [saveError, setSaveError] = React.useState<string | null>(null);
+  const saveColorwayMutation = useMutation({
+    mutationFn: async (payload: {
+      name: string;
+      silhouetteId: string;
+      materialMap: Record<string, string>;
+    }) => {
+      const res = await axios.post("/colorways", payload);
+      return res.data;
+    },
+  });
 
   // Extract initial colors from materials when they are first loaded
   React.useEffect(() => {
@@ -146,10 +159,38 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
     return undefined;
   }, [selectedMaterial, materialsMap, colorUpdateTrigger, colors]);
 
-  const handleSaveColorway = () => {
-    console.log("Saving colorway:", colorwayName);
-    setIsSaveColorwayOpen(false);
-    setColorwayName("");
+  const handleSaveColorway = async () => {
+    setSaveError(null);
+    const materialMap: Record<string, string> = {};
+    materialsMap.forEach((material, name) => {
+      if (material instanceof THREE.MeshStandardMaterial) {
+        materialMap[name] = "#" + material.color.getHexString();
+      }
+    });
+    try {
+      await saveColorwayMutation.mutateAsync({
+        name: colorwayName,
+        silhouetteId: silhouette._id,
+        materialMap,
+      });
+      setIsSaveColorwayOpen(false);
+      setColorwayName("");
+    } catch (err: unknown) {
+      if (
+        err &&
+        typeof err === "object" &&
+        "response" in err &&
+        typeof (err as { response?: { data?: { message?: string } } }).response
+          ?.data?.message === "string"
+      ) {
+        setSaveError(
+          (err as { response: { data: { message: string } } }).response.data
+            .message
+        );
+      } else {
+        setSaveError("Failed to save colorway");
+      }
+    }
   };
 
   // Handle color updates from image search/generate theme
@@ -244,11 +285,22 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
             <Button
               variant="outline"
               onClick={() => setIsSaveColorwayOpen(false)}
+              disabled={saveColorwayMutation.status === "pending"}
             >
               Cancel
             </Button>
-            <Button onClick={handleSaveColorway}>Submit</Button>
+            <Button
+              onClick={handleSaveColorway}
+              disabled={saveColorwayMutation.status === "pending"}
+            >
+              {saveColorwayMutation.status === "pending"
+                ? "Saving..."
+                : "Submit"}
+            </Button>
           </DialogFooter>
+          {saveError && (
+            <div className="text-red-500 mt-2 text-sm">{saveError}</div>
+          )}
         </DialogContent>
       </Dialog>
     </div>
