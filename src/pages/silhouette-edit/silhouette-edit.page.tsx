@@ -22,11 +22,17 @@ import { ImageSearchSidebar } from "./components/image-search-sidebar.component"
 
 const apiUrl = import.meta.env.VITE_BACKEND_API_URL;
 
+interface MetaData {
+  initialScale: number;
+  unusedMaterials: string[];
+}
+
 interface Silhouette {
   _id: string;
   name: string;
   url: string;
   slug: string;
+  metaData: MetaData;
   createdAt: string;
   updatedAt: string;
 }
@@ -72,60 +78,39 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
 
   const handleRandomize = () => {
     // const nezuko: Record<string, string> = {
-    //   "back.down": "#ef0000", // Soft pink
-    //   "back.top": "#ef0000", // Hello Kitty red bow
-    //   "back.little.part": "#ef0000", // White leather
-    //   "back.mid": "#ef0000",
-    //   inserts: "#ef0000",
-    //   central: "#ef0000",
-    //   "down.with.holes": "#ef0000",
-    //   "toe.cap": "#ef0000", // Deeper pink/red
-    //   vamp: "#ef0000",
-    //   "label.back": "#ef0000", // Pale pink label
-    //   "label.front": "#ef0000", // Red bow detail
-    //   logo: "#0000ff",
-    //   sole: "#ef0000", // Light pink midsole
-    //   "middle.with.holes": "#ef0000",
-    //   swoosh: "#ff00ff",
-    //   "sole.logo": "#ef0000", // Soft pink outsole
-    //   seams: "#0000ff",
-    //   shoelace: "#0000ff",
-    //   tongue: "#ef0000",
-    //   "top.round": "#ef0000",
-    //   "under.feet": "#ef0000",
-    //   "under.sole.plate": "#ef0000",
+    //   "back.down": "#F99FC9", // Soft pink
+    //   "back.top": "#E75480", // Hello Kitty red bow
+    //   "back.little.part": "#FFFFFF", // White leather
+    //   "back.mid": "#F99FC9",
+    //   inserts: "#FFFFFF",
+    //   central: "#FFFFFF",
+    //   "down.with.holes": "#F99FC9",
+    //   "toe.cap": "#E75480", // Deeper pink/red
+    //   vamp: "#FFFFFF",
+    //   "label.back": "#FEEAEA", // Pale pink label
+    //   "label.front": "#E75480", // Red bow detail
+    //   logo: "#E75480",
+    //   sole: "#FEEAEA", // Light pink midsole
+    //   "middle.with.holes": "#F99FC9",
+    //   swoosh: "#E75480",
+    //   "sole.logo": "#FFB6C1", // Soft pink outsole
+    //   seams: "#E75480",
+    //   shoelace: "#FFB6C1",
+    //   tongue: "#FFFFFF",
+    //   "top.round": "#F99FC9",
+    //   "under.feet": "#FFB6C1",
+    //   "under.sole.plate": "#FFB6C1",
     // };
 
-    const nezuko: Record<string, string> = {
-      "back.down": "#F99FC9", // Soft pink
-      "back.top": "#E75480", // Hello Kitty red bow
-      "back.little.part": "#FFFFFF", // White leather
-      "back.mid": "#F99FC9",
-      inserts: "#FFFFFF",
-      central: "#FFFFFF",
-      "down.with.holes": "#F99FC9",
-      "toe.cap": "#E75480", // Deeper pink/red
-      vamp: "#FFFFFF",
-      "label.back": "#FEEAEA", // Pale pink label
-      "label.front": "#E75480", // Red bow detail
-      logo: "#E75480",
-      sole: "#FEEAEA", // Light pink midsole
-      "middle.with.holes": "#F99FC9",
-      swoosh: "#E75480",
-      "sole.logo": "#FFB6C1", // Soft pink outsole
-      seams: "#E75480",
-      shoelace: "#FFB6C1",
-      tongue: "#FFFFFF",
-      "top.round": "#F99FC9",
-      "under.feet": "#FFB6C1",
-      "under.sole.plate": "#FFB6C1",
-    };
-
     materialsMap.forEach((material) => {
-      const color = nezuko[material.name];
-      if (color) {
-        (material as THREE.MeshStandardMaterial).color.set(color);
-      }
+      // const color = nezuko[material.name];
+      // if (color) {
+      (material as THREE.MeshStandardMaterial).color.set(
+        Math.random(),
+        Math.random(),
+        Math.random()
+      );
+      // }
     });
     // Trigger a re-render to update the color indicator
     setColorUpdateTrigger((prev) => prev + 1);
@@ -186,24 +171,28 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
   };
 
   return (
-    <div className="w-full h-screen bg-gradient-to-br from-gray-50 to-gray-200 dark:from-zinc-900 dark:to-zinc-800 flex flex-col">
+    <div className="w-full h-[calc(100vh-4rem)] flex flex-col">
       <div className="flex-grow relative h-0">
         <div className="absolute top-8 left-8 z-10 pointer-events-none">
-          <h1 className="text-4xl font-bold text-zinc-800 dark:text-white mix-blend-difference">
+          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-800 dark:text-white mix-blend-difference">
             {silhouette.name}
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 mix-blend-difference">
+          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mix-blend-difference">
             Customize your silhouette
           </p>
         </div>
-        <Canvas3D modelUrl={silhouette.url} />
+        <Canvas3D
+          modelUrl={silhouette.url}
+          initialScale={silhouette.metaData?.initialScale}
+        />
       </div>
-      <div className="w-full bg-white dark:bg-zinc-950 border-t border-gray-200 dark:border-zinc-800 px-6 pt-2 pb-6 shadow-lg">
+      <div className="w-full bg-white dark:bg-zinc-950 border-t border-gray-200 dark:border-zinc-800 px-8 pt-2 pb-6 shadow-lg">
         <div className="flex flex-col gap-4">
           <MaterialSelector
             selectedMaterial={selectedMaterial}
             onMaterialChange={setSelectedMaterial}
             silhouetteName={silhouette.slug}
+            unusedMaterials={silhouette.metaData?.unusedMaterials}
           />
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <ColorPalette

@@ -18,6 +18,7 @@ import {
 
 interface Canvas3DProps {
   modelUrl: string;
+  initialScale?: number;
 }
 
 // Component to expose renderer for download functionality
@@ -50,7 +51,7 @@ function CameraControls({
   return null;
 }
 
-export function Canvas3D({ modelUrl }: Canvas3DProps) {
+export function Canvas3D({ modelUrl, initialScale }: Canvas3DProps) {
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.Camera | null>(null);
@@ -207,7 +208,7 @@ export function Canvas3D({ modelUrl }: Canvas3DProps) {
         />
         <pointLight position={[0, 10, 10]} intensity={1.5} color={"#ffffff"} />
         <Suspense fallback={<Loader3D />}>
-          <ShoeModel url={modelUrl} />
+          <ShoeModel url={modelUrl} initialScale={initialScale} />
         </Suspense>
         <OrbitControls enablePan enableZoom enableRotate autoRotate={false} />
         <RendererExposer onRendererReady={handleRendererReady} />

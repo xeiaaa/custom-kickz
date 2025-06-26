@@ -5,9 +5,10 @@ import { useSilhouetteEditor } from "../silhouette.context";
 
 interface ShoeModelProps {
   url: string;
+  initialScale?: number;
 }
 
-export function ShoeModel({ url }: ShoeModelProps) {
+export function ShoeModel({ url, initialScale }: ShoeModelProps) {
   const { setMaterialsMap } = useSilhouetteEditor();
   const { scene } = useGLTF(url);
 
@@ -28,6 +29,13 @@ export function ShoeModel({ url }: ShoeModelProps) {
     });
     setMaterialsMap(materials);
   }, [scene, setMaterialsMap]);
+
+  // Apply initial scale if provided
+  React.useEffect(() => {
+    if (initialScale && scene) {
+      scene.scale.set(initialScale, initialScale, initialScale);
+    }
+  }, [initialScale, scene]);
 
   return <primitive object={scene} />;
 }

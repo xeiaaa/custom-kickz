@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
-    <main className="min-h-svh w-full bg-gradient-to-br from-white to-gray-100 dark:from-zinc-900 dark:to-zinc-800">
+    <main className="w-full">
       {/* Hero Section */}
       <section className="w-full flex flex-col-reverse md:flex-row items-center justify-between px-4 md:px-16 py-16 gap-8 max-w-7xl mx-auto">
         <div className="flex-1 text-center md:text-left space-y-6">

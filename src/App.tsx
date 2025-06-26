@@ -1,12 +1,18 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { Layout } from "@/components/layout/layout.component";
 import Home from "@/pages/home/home.page";
 import Test from "@/pages/test/test.page";
 import SilhouettesPage from "@/pages/silhouettes/silhouettes.page";
 import SilhouetteEditPage from "@/pages/silhouette-edit/silhouette-edit.page";
 
 function App() {
+  const location = useLocation();
+  const onEditPage =
+    location.pathname.startsWith("/silhouettes/") &&
+    location.pathname.endsWith("/edit");
+
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center gap-4">
+    <Layout fullHeightContent={onEditPage}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/test" element={<Test />} />
@@ -16,7 +22,7 @@ function App() {
           element={<SilhouetteEditPage />}
         />
       </Routes>
-    </div>
+    </Layout>
   );
 }
 

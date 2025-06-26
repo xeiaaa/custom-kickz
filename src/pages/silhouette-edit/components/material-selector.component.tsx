@@ -6,17 +6,24 @@ interface MaterialSelectorProps {
   selectedMaterial: string;
   onMaterialChange: (value: string) => void;
   silhouetteName?: string;
+  unusedMaterials?: string[];
 }
 
 export function MaterialSelector({
   selectedMaterial,
   onMaterialChange,
   silhouetteName,
+  unusedMaterials = [],
 }: MaterialSelectorProps) {
   const { materials } = useSilhouetteEditor();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+
+  // Filter out unused materials
+  const filteredMaterials = materials.filter(
+    (mat) => !unusedMaterials.includes(mat.name)
+  );
 
   useEffect(() => {
     const checkScrollability = () => {
@@ -72,7 +79,7 @@ export function MaterialSelector({
           ref={scrollContainerRef}
           className="flex space-x-4 overflow-x-auto pb-4 scroll-smooth scrollbar-hide"
         >
-          {materials.map((mat) => (
+          {filteredMaterials.map((mat) => (
             <div
               key={mat.uuid}
               onClick={() => onMaterialChange(mat.name || mat.uuid)}
