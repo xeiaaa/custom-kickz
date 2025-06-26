@@ -2,9 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import { useAxios } from "@/lib/useAxios";
 import { ColorwayModelCanvas } from "./ColorwayModelCanvas";
-import { useGLTF } from "@react-three/drei";
-import { useMemo, useEffect } from "react";
-import * as THREE from "three";
 
 type Silhouette = {
   _id: string;
@@ -25,61 +22,6 @@ type Colorway = {
   createdAt: string;
   updatedAt: string;
 };
-
-function ShoeModelWithColorway({
-  modelUrl,
-  materialMap,
-}: {
-  modelUrl: string;
-  materialMap: Record<string, string>;
-}) {
-  const { scene } = useGLTF(modelUrl);
-
-  // Deep clone the scene and its materials
-  const clonedScene = useMemo(() => {
-    const clone = scene.clone(true);
-
-    clone.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh;
-        // Deep clone materials
-        if (Array.isArray(mesh.material)) {
-          mesh.material = mesh.material.map((mat) => mat.clone());
-        } else if (mesh.material) {
-          mesh.material = mesh.material.clone();
-        }
-      }
-    });
-
-    return clone;
-  }, [scene]);
-
-  useEffect(() => {
-    clonedScene.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh;
-        if (Array.isArray(mesh.material)) {
-          mesh.material.forEach((mat: THREE.Material) => {
-            if (mat.name && materialMap[mat.name]) {
-              (mat as THREE.MeshStandardMaterial).color = new THREE.Color(
-                materialMap[mat.name]
-              );
-            }
-          });
-        } else if (mesh.material) {
-          const mat = mesh.material as THREE.Material;
-          if (mat.name && materialMap[mat.name]) {
-            (mat as THREE.MeshStandardMaterial).color = new THREE.Color(
-              materialMap[mat.name]
-            );
-          }
-        }
-      }
-    });
-  }, [clonedScene, materialMap]);
-
-  return <primitive object={clonedScene} />;
-}
 
 export default function MyColorwaysPage() {
   const { isSignedIn } = useUser();

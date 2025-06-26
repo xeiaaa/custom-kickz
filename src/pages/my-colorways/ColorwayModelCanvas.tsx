@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, Suspense } from "react";
+import { useMemo, useEffect, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
@@ -28,42 +28,40 @@ function deepCloneMaterial(material: THREE.Material): THREE.Material {
   // Clone the material and also clone its textures/uniforms if present
   const cloned = material.clone();
   const mat = cloned as THREE.MeshStandardMaterial;
-  // @ts-expect-error
   if (mat.map) mat.map = mat.map?.clone?.() || mat.map;
-  // @ts-expect-error
   if (mat.normalMap) mat.normalMap = mat.normalMap?.clone?.() || mat.normalMap;
-  // @ts-expect-error
+
   if (mat.roughnessMap)
     mat.roughnessMap = mat.roughnessMap?.clone?.() || mat.roughnessMap;
-  // @ts-expect-error
+
   if (mat.metalnessMap)
     mat.metalnessMap = mat.metalnessMap?.clone?.() || mat.metalnessMap;
-  // @ts-expect-error
+
   if (mat.aoMap) mat.aoMap = mat.aoMap?.clone?.() || mat.aoMap;
-  // @ts-expect-error
+
   if (mat.emissiveMap)
     mat.emissiveMap = mat.emissiveMap?.clone?.() || mat.emissiveMap;
-  // @ts-expect-error
+
   if (mat.bumpMap) mat.bumpMap = mat.bumpMap?.clone?.() || mat.bumpMap;
-  // @ts-expect-error
+
   if (mat.displacementMap)
     mat.displacementMap = mat.displacementMap?.clone?.() || mat.displacementMap;
-  // @ts-expect-error
+
   if (mat.alphaMap) mat.alphaMap = mat.alphaMap?.clone?.() || mat.alphaMap;
-  // @ts-expect-error
+
   if ((mat as any).clearcoatNormalMap)
     (mat as any).clearcoatNormalMap =
       (mat as any).clearcoatNormalMap?.clone?.() ||
       (mat as any).clearcoatNormalMap;
-  // @ts-expect-error
+
   if ((mat as any).sheenColorMap)
     (mat as any).sheenColorMap =
       (mat as any).sheenColorMap?.clone?.() || (mat as any).sheenColorMap;
-  // @ts-expect-error
+
   if ((mat as any).transmissionMap)
     (mat as any).transmissionMap =
       (mat as any).transmissionMap?.clone?.() || (mat as any).transmissionMap;
-  // @ts-expect-error
+
   if ((mat as any).thicknessMap)
     (mat as any).thicknessMap =
       (mat as any).thicknessMap?.clone?.() || (mat as any).thicknessMap;
