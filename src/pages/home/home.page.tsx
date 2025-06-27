@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { RecentColorways } from "@/components/recent-colorways/recent-colorways.component";
+import { HomeHero3DCanvas } from "./HomeHero3DCanvas";
 
 export default function Home() {
   return (
@@ -30,12 +31,9 @@ export default function Home() {
           </div>
         </div>
         <div className="flex-1 flex items-center justify-center">
-          <img
-            src="https://images.unsplash.com/photo-1663856548834-3b5814f6dc11?q=80&w=732&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt="Sneaker Hero"
-            className="w-full max-w-md rounded-3xl shadow-2xl border-4 border-white dark:border-zinc-900 object-cover"
-            loading="lazy"
-          />
+          <div className="w-full max-w-md h-[400px] md:h-[480px] rounded-3xl shadow-2xl border-4 border-white dark:border-zinc-900 bg-white dark:bg-zinc-900">
+            <HomeHero3DCanvas />
+          </div>
         </div>
       </section>
       {/* Features Section */}

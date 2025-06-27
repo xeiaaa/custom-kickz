@@ -104,10 +104,9 @@ export function RecentColorways() {
           };
 
           return (
-            <Link
+            <div
               key={colorway._id}
-              to={`/colorways/${colorway._id}`}
-              className="flex flex-col items-center bg-white dark:bg-zinc-900 rounded-xl shadow p-4 min-w-[260px] max-w-xs mx-auto hover:shadow-lg transition-shadow cursor-pointer"
+              className="flex flex-col items-center bg-white dark:bg-zinc-900 rounded-xl shadow p-4 min-w-[260px] max-w-xs mx-auto hover:shadow-lg transition-shadow"
             >
               <ColorwayModelCanvas
                 silhouette={colorway.silhouetteId}
@@ -115,7 +114,12 @@ export function RecentColorways() {
                 size={220}
               />
               <div className="mt-4 text-lg font-semibold text-center">
-                {colorway.name}
+                <Link
+                  to={`/colorways/${colorway._id}`}
+                  className="hover:underline"
+                >
+                  {colorway.name}
+                </Link>
               </div>
               <div className="text-sm text-zinc-500 text-center">
                 {colorway.silhouetteId?.name || "Unknown"}
@@ -123,7 +127,7 @@ export function RecentColorways() {
               <div className="text-xs text-zinc-400 text-center mt-1">
                 by {colorway.userId?.firstName} {colorway.userId?.lastName}
               </div>
-            </Link>
+            </div>
           );
         })}
       </div>

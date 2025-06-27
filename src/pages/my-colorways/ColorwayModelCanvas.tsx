@@ -145,7 +145,7 @@ export function ColorwayModelCanvas({
           <ShoeModelWithColorway
             modelUrl={silhouette.url}
             materialMap={colorway.materialMap}
-            initialScale={silhouette.metaData?.initialScale}
+            initialScale={silhouette.metaData?.initialScale ?? 1}
           />
         </Suspense>
         <OrbitControls
