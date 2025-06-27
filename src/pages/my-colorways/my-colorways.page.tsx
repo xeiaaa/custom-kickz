@@ -59,7 +59,12 @@ export default function MyColorwaysPage() {
                   size={220}
                 />
                 <div className="mt-4 text-lg font-semibold text-center">
-                  {colorway.name}
+                  <a
+                    href={`/colorways/${colorway._id}`}
+                    className="hover:underline"
+                  >
+                    {colorway.name}
+                  </a>
                 </div>
                 <div className="text-sm text-zinc-500 text-center">
                   {colorway.silhouetteId?.name || "Unknown"}
