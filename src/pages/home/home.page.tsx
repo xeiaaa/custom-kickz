@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { RecentColorways } from "@/components/recent-colorways/recent-colorways.component";
 
 export default function Home() {
   return (
@@ -64,6 +65,8 @@ export default function Home() {
           </p>
         </div>
       </section>
+      {/* Recent Colorways Section */}
+      <RecentColorways />
     </main>
   );
 }

@@ -5,6 +5,7 @@ import Test from "@/pages/test/test.page";
 import SilhouettesPage from "@/pages/silhouettes/silhouettes.page";
 import SilhouetteEditPage from "@/pages/silhouette-edit/silhouette-edit.page";
 import MyColorwaysPage from "@/pages/my-colorways/my-colorways.page";
+import GalleryPage from "@/pages/gallery/gallery.page";
 
 function App() {
   const location = useLocation();
@@ -23,6 +24,7 @@ function App() {
           element={<SilhouetteEditPage />}
         />
         <Route path="/my-colorways" element={<MyColorwaysPage />} />
+        <Route path="/gallery" element={<GalleryPage />} />
       </Routes>
     </Layout>
   );

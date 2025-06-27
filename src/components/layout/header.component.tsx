@@ -3,6 +3,7 @@ import {
   SignedIn,
   SignedOut,
   SignInButton,
+  SignUpButton,
   UserButton,
 } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,12 @@ export function Header() {
             >
               Silhouettes
             </Link>
+            <Link
+              to="/gallery"
+              className="text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors"
+            >
+              Gallery
+            </Link>
             <SignedIn>
               <Link
                 to="/my-colorways"
@@ -52,9 +59,9 @@ export function Header() {
                   Sign In
                 </Button>
               </SignInButton>
-              <SignInButton mode="modal">
+              <SignUpButton mode="modal">
                 <Button size="sm">Sign Up</Button>
-              </SignInButton>
+              </SignUpButton>
             </SignedOut>
             <SignedIn>
               <UserButton
