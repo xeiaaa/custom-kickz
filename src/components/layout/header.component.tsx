@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   SignedIn,
   SignedOut,
@@ -9,6 +9,14 @@ import {
 import { Button } from "@/components/ui/button";
 
 export function Header() {
+  const location = useLocation();
+
+  const navLinks = [
+    { to: "/", label: "Home", exact: true },
+    { to: "/silhouettes", label: "Silhouettes" },
+    { to: "/gallery", label: "Gallery" },
+  ];
+
   return (
     <header className="w-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-zinc-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-8">
@@ -23,28 +31,36 @@ export function Header() {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link
-              to="/"
-              className="text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              Home
-            </Link>
-            <Link
-              to="/silhouettes"
-              className="text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              Silhouettes
-            </Link>
-            <Link
-              to="/gallery"
-              className="text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors"
-            >
-              Gallery
-            </Link>
+            {navLinks.map((link) => {
+              const isActive = link.exact
+                ? location.pathname === link.to
+                : location.pathname.startsWith(link.to) && link.to !== "/";
+              return (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`transition-colors px-2 py-1 rounded-md
+                    ${
+                      isActive
+                        ? "text-zinc-900 font-medium"
+                        : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
+                    }
+                  `}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
             <SignedIn>
               <Link
                 to="/my-colorways"
-                className="text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                className={`transition-colors px-2 py-1 rounded-md
+                  ${
+                    location.pathname.startsWith("/my-colorways")
+                      ? "text-zinc-900 font-medium"
+                      : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
+                  }
+                `}
               >
                 My Colorways
               </Link>
