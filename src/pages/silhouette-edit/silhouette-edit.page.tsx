@@ -212,13 +212,13 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
   };
 
   return (
-    <div className="w-full h-[calc(100vh-4rem)] flex flex-col">
+    <div className="w-full h-[calc(100vh-4rem)] flex flex-col bg-[var(--color-neutral-white)]">
       <div className="flex-grow relative h-0">
         <div className="absolute top-8 left-8 z-10 pointer-events-none">
-          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-800 dark:text-white mix-blend-difference">
+          <h1 className="text-2xl sm:text-4xl font-bold text-[var(--color-neutral-dark)] mix-blend-difference">
             {silhouette.name}
           </h1>
-          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mix-blend-difference">
+          <p className="text-sm sm:text-base text-[var(--color-neutral-medium)] mix-blend-difference">
             Customize your silhouette
           </p>
         </div>
@@ -227,7 +227,7 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
           initialScale={silhouette.metaData?.initialScale}
         />
       </div>
-      <div className="w-full bg-white dark:bg-zinc-950 border-t border-gray-200 dark:border-zinc-800 px-8 pt-2 pb-6 shadow-lg">
+      <div className="w-full bg-[var(--color-neutral-white)] border-t border-[var(--color-neutral-light)] px-8 pt-2 pb-6 shadow-lg">
         <div className="flex flex-col gap-4">
           <MaterialSelector
             selectedMaterial={selectedMaterial}
@@ -247,11 +247,20 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
               <Button
                 variant="outline"
                 onClick={() => setIsImageSearchOpen(true)}
+                className="border-[var(--color-neutral-dark)] text-[var(--color-neutral-dark)] hover:bg-[var(--color-accent-orange)] hover:text-white hover:border-[var(--color-accent-orange)]"
               >
                 Generate Theme
               </Button>
-              <Button variant="outline">Save as Draft</Button>
-              <Button onClick={() => setIsSaveColorwayOpen(true)}>
+              <Button
+                variant="outline"
+                className="border-[var(--color-neutral-dark)] text-[var(--color-neutral-dark)] hover:bg-[var(--color-accent-orange)] hover:text-white hover:border-[var(--color-accent-orange)]"
+              >
+                Save as Draft
+              </Button>
+              <Button
+                onClick={() => setIsSaveColorwayOpen(true)}
+                className="bg-[var(--color-accent-orange)] text-white hover:opacity-90"
+              >
                 Save Colorway
               </Button>
             </div>
@@ -265,10 +274,12 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
         onColorsUpdated={handleColorsUpdated}
       />
       <Dialog open={isSaveColorwayOpen} onOpenChange={setIsSaveColorwayOpen}>
-        <DialogContent>
+        <DialogContent className="bg-[var(--color-neutral-white)] border-[var(--color-neutral-light)]">
           <DialogHeader>
-            <DialogTitle>Save Colorway</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-[var(--color-neutral-dark)]">
+              Save Colorway
+            </DialogTitle>
+            <DialogDescription className="text-[var(--color-neutral-medium)]">
               Enter a name for your new colorway to save it for later use.
             </DialogDescription>
           </DialogHeader>
@@ -277,7 +288,7 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
               type="text"
               value={colorwayName}
               onChange={(e) => setColorwayName(e.target.value)}
-              className="w-full p-2 border rounded-md dark:bg-zinc-700 dark:text-white"
+              className="w-full p-2 border border-[var(--color-neutral-light)] rounded-md bg-[var(--color-neutral-white)] text-[var(--color-neutral-dark)] focus:border-[var(--color-accent-orange)] focus:outline-none"
               placeholder="e.g., Summer Vibes"
             />
           </div>
@@ -286,12 +297,14 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
               variant="outline"
               onClick={() => setIsSaveColorwayOpen(false)}
               disabled={saveColorwayMutation.status === "pending"}
+              className="border-[var(--color-neutral-dark)] text-[var(--color-neutral-dark)] hover:bg-[var(--color-accent-orange)] hover:text-white hover:border-[var(--color-accent-orange)]"
             >
               Cancel
             </Button>
             <Button
               onClick={handleSaveColorway}
               disabled={saveColorwayMutation.status === "pending"}
+              className="bg-[var(--color-accent-orange)] text-white hover:opacity-90"
             >
               {saveColorwayMutation.status === "pending"
                 ? "Saving..."
@@ -325,13 +338,13 @@ export default function SilhouetteEditPage() {
 
   if (isLoading)
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-screen bg-[var(--color-neutral-white)] text-[var(--color-neutral-dark)]">
         Loading...
       </div>
     );
   if (error || !silhouette)
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-screen bg-[var(--color-neutral-white)] text-[var(--color-neutral-dark)]">
         Silhouette not found.
       </div>
     );
