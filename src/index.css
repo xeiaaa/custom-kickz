@@ -74,6 +74,49 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Nike GO FlyEase Design System Colors */
+  --color-primary-main: #e8ff1e; /* light-green-yellow */
+  --color-primary-accent: #ff6b35; /* coral-pink */
+  --color-primary-supporting: #87ceeb; /* light-blue */
+  --color-secondary-main: #000000; /* black */
+  --color-secondary-accent: #40e0d0; /* turquoise */
+  --color-secondary-supporting: #dc143c; /* crimson */
+  --color-neutral-white: #ffffff;
+  --color-neutral-light: #f8f9fa;
+  --color-neutral-medium: #6c757d;
+  --color-neutral-dark: #212529;
+  --color-accent-orange: #ff6b35;
+  --color-accent-volt: #e8ff1e;
+  --color-accent-celestine: #87ceeb;
+
+  /* Typography - Following design.json hierarchy */
+  --font-family: sans-serif;
+  --font-size-h1: 3rem; /* extra-large */
+  --font-size-h2: 2rem; /* large */
+  --font-size-body: 1rem; /* medium */
+  --font-size-caption: 0.875rem; /* small */
+  --font-weight-bold: 700;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --line-height-comfortable: 1.6;
+  --line-height-tight: 1.2;
+
+  /* Spacing Scale - Following design.json spacing scale */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
+
+  /* Component Specific */
+  --button-radius: 0.5rem; /* rounded */
+  --button-padding: 0.75rem 1.5rem; /* comfortable */
+  --card-radius: 1rem;
+  --card-shadow: 0 4px 24px 0 rgba(26, 26, 26, 0.06);
+  --price-tag-radius: 50%;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dark {
@@ -117,4 +160,467 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* --- Typography - Following design.json hierarchy --- */
+body {
+  font-family: var(--font-family);
+  color: var(--color-neutral-dark);
+  background: var(--color-neutral-white);
+  line-height: var(--line-height-comfortable);
+}
+
+/* Override Tailwind's font-sans with our custom font */
+.font-sans {
+  font-family: var(--font-family) !important;
+}
+
+/* Custom font class for Nike GO FlyEase design system */
+.font-nike {
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-regular);
+}
+
+.font-nike-bold {
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-bold);
+}
+
+.font-nike-medium {
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-medium);
+}
+
+h1,
+.h1 {
+  font-family: var(--font-family);
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-neutral-dark);
+  margin-bottom: var(--spacing-sm);
+  line-height: var(--line-height-tight);
+  text-transform: none; /* sentence-case */
+}
+
+h2,
+.h2 {
+  font-family: var(--font-family);
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-neutral-dark);
+  margin-bottom: var(--spacing-sm);
+  text-transform: none; /* sentence-case */
+}
+
+h3,
+.h3 {
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-neutral-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+h4,
+.h4 {
+  font-family: var(--font-family);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-neutral-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+p,
+.body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  color: var(--color-neutral-dark);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-comfortable);
+}
+
+.caption {
+  font-family: var(--font-family);
+  font-size: var(--font-size-caption);
+  color: var(--color-neutral-medium);
+  font-weight: var(--font-weight-medium);
+}
+
+/* --- Buttons - Following design.json button styles --- */
+.button,
+.btn {
+  border-radius: var(--button-radius);
+  padding: var(--button-padding);
+  font-size: var(--font-size-body);
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-bold);
+  transition: var(--transition);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.button-primary,
+.btn-primary {
+  background: var(--color-accent-orange);
+  color: var(--color-neutral-white);
+  box-shadow: 0 2px 8px 0 rgba(255, 107, 53, 0.2);
+}
+
+.button-secondary,
+.btn-secondary {
+  background: transparent;
+  color: var(--color-neutral-dark);
+  border: 2px solid var(--color-neutral-dark);
+}
+
+.button:active,
+.button:hover,
+.btn:active,
+.btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 4px 24px 0 rgba(255, 107, 53, 0.3);
+}
+
+/* --- Cards - Following design.json product-listing structure --- */
+.card {
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  background: var(--color-neutral-white);
+  padding: var(--spacing-xl);
+  transition: var(--transition);
+  border: 1px solid var(--color-neutral-light);
+}
+
+.card:hover {
+  box-shadow: 0 8px 32px 0 rgba(26, 26, 26, 0.12);
+  transform: scale(1.02);
+}
+
+/* --- Price Tags - Following design.json price-tag style --- */
+.price-tag {
+  background: var(--color-accent-orange);
+  color: var(--color-neutral-white);
+  border-radius: var(--price-tag-radius);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-caption);
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+  min-height: 60px;
+}
+
+/* --- Badge - Following design.json component patterns --- */
+.badge {
+  display: inline-block;
+  border-radius: var(--button-radius);
+  background: var(--color-accent-orange);
+  color: var(--color-neutral-white);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
+  padding: var(--spacing-xs) var(--spacing-md);
+}
+
+/* --- Layout Helpers - Following design.json spacing and grid --- */
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.section-gap-large {
+  margin-bottom: var(--spacing-xxl);
+}
+
+.section-gap-medium {
+  margin-bottom: var(--spacing-xl);
+}
+
+.section-gap-small {
+  margin-bottom: var(--spacing-lg);
+}
+
+.component-gap-medium {
+  margin-bottom: var(--spacing-lg);
+}
+
+.element-gap-small {
+  margin-bottom: var(--spacing-md);
+}
+
+/* Grid System - Following design.json responsive grid */
+.grid-responsive {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.grid-12 {
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.grid-8 {
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+}
+
+/* --- Visual Elements - Following design.json shapes and backgrounds --- */
+.accent-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1;
+  z-index: -1;
+}
+
+.accent-circle.large {
+  width: 300px;
+  height: 300px;
+}
+
+.accent-circle.primary {
+  background: var(--color-primary-accent);
+}
+
+.accent-circle.secondary {
+  background: var(--color-primary-supporting);
+}
+
+.accent-circle.tertiary {
+  background: var(--color-accent-celestine);
+}
+
+/* --- Header - Following design.json header style --- */
+.header {
+  background: transparent;
+  padding: var(--spacing-lg) 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+.header-logo {
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-h3);
+  color: var(--color-neutral-dark);
+}
+
+.header-navigation {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
+}
+
+.header-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+/* --- Hero - Following design.json hero layout --- */
+.hero {
+  position: relative;
+  padding: var(--spacing-xxl) 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+}
+
+.hero-content {
+  z-index: 2;
+}
+
+.hero-image {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+/* --- Product Listings - Following design.json structure --- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-xl);
+  padding: var(--spacing-xl) 0;
+}
+
+.product-card {
+  position: relative;
+  background: var(--color-neutral-white);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px 0 rgba(26, 26, 26, 0.15);
+}
+
+.product-image {
+  width: 100%;
+  height: 250px;
+  background: var(--color-neutral-light);
+  position: relative;
+}
+
+.product-content {
+  padding: var(--spacing-lg);
+}
+
+.product-title {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-neutral-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.product-description {
+  color: var(--color-neutral-medium);
+  margin-bottom: var(--spacing-md);
+  line-height: var(--line-height-comfortable);
+}
+
+.product-features {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-md) 0;
+}
+
+.product-features li {
+  padding: var(--spacing-xs) 0;
+  color: var(--color-neutral-medium);
+  position: relative;
+  padding-left: var(--spacing-lg);
+}
+
+.product-features li::before {
+  content: "•";
+  color: var(--color-accent-orange);
+  font-weight: var(--font-weight-bold);
+  position: absolute;
+  left: 0;
+}
+
+/* --- Responsive Design - Following design.json breakpoints --- */
+@media (max-width: 1024px) {
+  .grid-12 {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-8,
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+
+  .hero {
+    padding: var(--spacing-xl) 0;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 320px) {
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  h1,
+  .h1 {
+    font-size: 2rem;
+  }
+
+  h2,
+  .h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* --- Utility Classes --- */
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+
+.bg-light-neutral {
+  background: var(--color-neutral-light);
+}
+.bg-white {
+  background: var(--color-neutral-white);
+}
+.bg-accent {
+  background: var(--color-accent-orange);
+}
+
+.text-dark-neutral {
+  color: var(--color-neutral-dark);
+}
+.text-medium-neutral {
+  color: var(--color-neutral-medium);
+}
+.text-accent {
+  color: var(--color-accent-orange);
+}
+
+.transition-smooth {
+  transition: var(--transition);
+}
+.transition-subtle {
+  transition: 0.15s ease;
+}
+
+.focus-visible:focus {
+  outline: 2px solid var(--color-accent-orange);
+  outline-offset: 2px;
 }

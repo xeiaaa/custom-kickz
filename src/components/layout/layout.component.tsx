@@ -8,9 +8,15 @@ interface LayoutProps {
 
 export function Layout({ children, fullHeightContent = false }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 dark:from-zinc-900 dark:to-zinc-800">
+    <div className="min-h-screen from-white to-gray-100 dark:from-zinc-900 dark:to-zinc-800 bg-[var(--color-neutral-white)] ">
       <Header />
-      <main className={!fullHeightContent ? "pt-16" : ""}>{children}</main>
+      <main
+        className={`w-full font-sans ${
+          !fullHeightContent ? "flex flex-col items-center justify-center" : ""
+        }`}
+      >
+        {children}
+      </main>
     </div>
   );
 }
