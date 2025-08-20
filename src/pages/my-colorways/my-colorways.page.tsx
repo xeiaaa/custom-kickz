@@ -37,28 +37,52 @@ export default function MyColorwaysPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto py-12 px-4">
+    <div className="max-w-7xl mx-auto py-10 px-2 sm:px-4">
       <SignedOut>
-        <div className="text-center text-2xl font-bold mt-24">Not Found</div>
+        <div className="flex flex-col items-center justify-center py-24">
+          <span className="text-5xl mb-4">🔒</span>
+          <div className="text-center text-xl font-semibold">
+            Please sign in to view your colorways.
+          </div>
+        </div>
       </SignedOut>
       <SignedIn>
-        <h1 className="text-3xl font-bold mb-8 text-center">My Colorways</h1>
-        {isLoading && <div>Loading...</div>}
-        {error && <div className="text-red-500">Failed to load colorways.</div>}
-        {data && data.length === 0 && <div>No colorways found.</div>}
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-center">
+          My Colorways
+        </h1>
+        {isLoading && (
+          <div className="flex flex-col items-center justify-center py-16">
+            <span className="text-4xl mb-4 animate-spin">🎨</span>
+            <div className="text-zinc-500 text-lg">Loading...</div>
+          </div>
+        )}
+        {error && (
+          <div className="flex flex-col items-center justify-center py-16">
+            <span className="text-4xl mb-4">❌</span>
+            <div className="text-red-500 text-lg">
+              Failed to load colorways.
+            </div>
+          </div>
+        )}
+        {data && data.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-16">
+            <span className="text-5xl mb-4">🕵️‍♂️</span>
+            <div className="text-zinc-500 text-lg">No colorways found.</div>
+          </div>
+        )}
         {data && data.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-center">
+          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 justify-center">
             {data.map((colorway: Colorway) => (
               <div
                 key={colorway._id}
-                className="flex flex-col items-center bg-white dark:bg-zinc-900 rounded-xl shadow p-4 min-w-[260px] max-w-xs mx-auto"
+                className="flex flex-col items-center bg-white dark:bg-zinc-900 rounded-xl shadow p-4 min-w-[160px] max-w-xs w-full mx-auto hover:shadow-lg transition-shadow"
               >
                 <ColorwayModelCanvas
                   silhouette={colorway.silhouetteId}
                   colorway={colorway}
-                  size={220}
+                  size={180}
                 />
-                <div className="mt-4 text-lg font-semibold text-center">
+                <div className="mt-4 text-base sm:text-lg font-semibold text-center truncate w-full">
                   <a
                     href={`/colorways/${colorway._id}`}
                     className="hover:underline"
@@ -66,7 +90,7 @@ export default function MyColorwaysPage() {
                     {colorway.name}
                   </a>
                 </div>
-                <div className="text-sm text-zinc-500 text-center">
+                <div className="text-xs sm:text-sm text-zinc-500 text-center truncate w-full">
                   {colorway.silhouetteId?.name || "Unknown"}
                 </div>
               </div>
