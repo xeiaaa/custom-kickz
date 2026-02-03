@@ -228,7 +228,7 @@ export function HomeHero3DCanvas() {
       <Canvas
         camera={{ position: [0, 0, 4], fov: 50 }}
         style={{
-          background: "linear-gradient(120deg, #f8fafc 0%, #f1f5f9 100%)",
+          background: "transparent",
         }}
         className="w-full h-full"
       >
@@ -266,8 +266,8 @@ export function HomeHero3DCanvas() {
           autoRotate={false}
         />
       </Canvas>
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none select-none z-20">
-        <div className="flex items-center gap-2 bg-white/80 dark:bg-zinc-900/80 rounded-full px-4 py-2 shadow text-zinc-700 dark:text-zinc-200 text-sm font-medium">
+      <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none select-none z-20">
+        <div className="flex items-center gap-1.5 sm:gap-2 bg-white/80 dark:bg-zinc-900/80 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow text-zinc-700 dark:text-zinc-200 text-xs sm:text-sm font-medium">
           <FaRegHandPointer />
           <span>Drag to rotate</span>
         </div>

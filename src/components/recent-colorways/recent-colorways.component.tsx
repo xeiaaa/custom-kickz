@@ -72,7 +72,7 @@ export function RecentColorways({
     <div
       className={
         viewAllHref
-          ? "flex justify-between items-end mb-12"
+          ? "flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 sm:gap-0 mb-8 sm:mb-12"
           : "mb-8"
       }
     >
@@ -80,8 +80,8 @@ export function RecentColorways({
         <h2
           className={
             viewAllHref
-              ? "text-4xl font-black mb-4 tracking-tight uppercase"
-              : "text-3xl font-bold"
+              ? "text-2xl sm:text-3xl md:text-4xl font-black mb-2 sm:mb-4 tracking-tight uppercase"
+              : "text-2xl sm:text-3xl font-bold"
           }
         >
           {title}
@@ -104,7 +104,7 @@ export function RecentColorways({
 
   if (isLoading) {
     return (
-      <section className="px-6 py-24">
+      <section className="px-4 sm:px-6 py-16 sm:py-24">
         <div className="max-w-7xl mx-auto">
           {sectionHeader}
           <div className="text-center">Loading...</div>
@@ -115,7 +115,7 @@ export function RecentColorways({
 
   if (error) {
     return (
-      <section className="px-6 py-24">
+      <section className="px-4 sm:px-6 py-16 sm:py-24">
         <div className="max-w-7xl mx-auto">
           {sectionHeader}
           <div className="text-center text-red-500">
@@ -128,7 +128,7 @@ export function RecentColorways({
 
   if (!data || data.length === 0) {
     return (
-      <section className="px-6 py-24">
+      <section className="px-4 sm:px-6 py-16 sm:py-24">
         <div className="max-w-7xl mx-auto">
           {sectionHeader}
           <div className="text-center">No colorways found.</div>
@@ -138,10 +138,10 @@ export function RecentColorways({
   }
 
   return (
-    <section className="px-6 py-24">
+    <section className="px-4 sm:px-6 py-16 sm:py-24">
       <div className="max-w-7xl mx-auto">
         {sectionHeader}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {data.map((colorway: PublicColorway) => {
             const canvasColorway: CanvasColorway = {
               ...colorway,
