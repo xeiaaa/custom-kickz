@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAxios } from "@/lib/useAxios";
 import { ColorwayModelCanvas } from "@/pages/my-colorways/ColorwayModelCanvas";
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 type Silhouette = {
   _id: string;
@@ -46,7 +47,17 @@ type CanvasColorway = {
   updatedAt: string;
 };
 
-export function RecentColorways() {
+type RecentColorwaysProps = {
+  title?: string;
+  subtitle?: string;
+  viewAllHref?: string;
+};
+
+export function RecentColorways({
+  title = "Recent Colorways",
+  subtitle,
+  viewAllHref,
+}: RecentColorwaysProps = {}) {
   const axios = useAxios();
 
   const { data, isLoading, error } = useQuery({
@@ -57,25 +68,59 @@ export function RecentColorways() {
     },
   });
 
+  const sectionHeader = (
+    <div
+      className={
+        viewAllHref
+          ? "flex justify-between items-end mb-12"
+          : "mb-8"
+      }
+    >
+      <div>
+        <h2
+          className={
+            viewAllHref
+              ? "text-4xl font-black mb-4 tracking-tight uppercase"
+              : "text-3xl font-bold"
+          }
+        >
+          {title}
+        </h2>
+        {subtitle && (
+          <p className="text-neutral-500 dark:text-neutral-400">{subtitle}</p>
+        )}
+      </div>
+      {viewAllHref && (
+        <Link
+          to={viewAllHref}
+          className="text-yellow-500 dark:text-yellow-400 font-bold hover:underline flex items-center gap-2 group shrink-0"
+        >
+          View all colorways{" "}
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </Link>
+      )}
+    </div>
+  );
+
   if (isLoading) {
     return (
-      <section className="w-full max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold mb-8 text-center">
-          Recent Colorways
-        </h2>
-        <div className="text-center">Loading...</div>
+      <section className="px-6 py-24">
+        <div className="max-w-7xl mx-auto">
+          {sectionHeader}
+          <div className="text-center">Loading...</div>
+        </div>
       </section>
     );
   }
 
   if (error) {
     return (
-      <section className="w-full max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold mb-8 text-center">
-          Recent Colorways
-        </h2>
-        <div className="text-center text-red-500">
-          Failed to load recent colorways.
+      <section className="px-6 py-24">
+        <div className="max-w-7xl mx-auto">
+          {sectionHeader}
+          <div className="text-center text-red-500">
+            Failed to load recent colorways.
+          </div>
         </div>
       </section>
     );
@@ -83,53 +128,47 @@ export function RecentColorways() {
 
   if (!data || data.length === 0) {
     return (
-      <section className="w-full max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold mb-8 text-center">
-          Recent Colorways
-        </h2>
-        <div className="text-center">No colorways found.</div>
+      <section className="px-6 py-24">
+        <div className="max-w-7xl mx-auto">
+          {sectionHeader}
+          <div className="text-center">No colorways found.</div>
+        </div>
       </section>
     );
   }
 
   return (
-    <section className="w-full max-w-7xl mx-auto px-4 py-16">
-      <h2 className="text-3xl font-bold mb-8 text-center">Recent Colorways</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-center">
-        {data.map((colorway: PublicColorway) => {
-          // Convert to compatible type for ColorwayModelCanvas
-          const canvasColorway: CanvasColorway = {
-            ...colorway,
-            userId: colorway.userId._id, // Convert User object to string ID
-          };
+    <section className="px-6 py-24">
+      <div className="max-w-7xl mx-auto">
+        {sectionHeader}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {data.map((colorway: PublicColorway) => {
+            const canvasColorway: CanvasColorway = {
+              ...colorway,
+              userId: colorway.userId._id,
+            };
 
-          return (
-            <div
-              key={colorway._id}
-              className="flex flex-col items-center bg-white dark:bg-zinc-900 rounded-xl shadow p-4 min-w-[260px] max-w-xs mx-auto hover:shadow-lg transition-shadow"
-            >
-              <ColorwayModelCanvas
-                silhouette={colorway.silhouetteId}
-                colorway={canvasColorway}
-                size={220}
-              />
-              <div className="mt-4 text-lg font-semibold text-center">
-                <Link
-                  to={`/colorways/${colorway._id}`}
-                  className="hover:underline"
-                >
-                  {colorway.name}
-                </Link>
-              </div>
-              <div className="text-sm text-zinc-500 text-center">
-                {colorway.silhouetteId?.name || "Unknown"}
-              </div>
-              <div className="text-xs text-zinc-400 text-center mt-1">
-                by {colorway.userId?.firstName} {colorway.userId?.lastName}
-              </div>
-            </div>
-          );
-        })}
+            return (
+              <Link
+                key={colorway._id}
+                to={`/colorways/${colorway._id}`}
+                className="group cursor-pointer"
+              >
+                <div className="aspect-square bg-neutral-200 dark:bg-neutral-900 rounded-3xl mb-4 overflow-hidden border border-black/5 dark:border-white/5 group-hover:border-yellow-400/50 transition-all shadow-sm flex items-center justify-center">
+                  <ColorwayModelCanvas
+                    silhouette={colorway.silhouetteId}
+                    colorway={canvasColorway}
+                    size={220}
+                  />
+                </div>
+                <h4 className="font-bold text-lg">{colorway.name}</h4>
+                <p className="text-neutral-500 text-sm">
+                  by {colorway.userId?.firstName} {colorway.userId?.lastName}
+                </p>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

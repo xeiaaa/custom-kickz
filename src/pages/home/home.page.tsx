@@ -1,70 +1,97 @@
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { ArrowRight, Sparkles, Box, Share2 } from "lucide-react";
 import { RecentColorways } from "@/components/recent-colorways/recent-colorways.component";
 import { HomeHero3DCanvas } from "./HomeHero3DCanvas";
 
+const FEATURES = [
+  {
+    icon: Box,
+    title: "Live 3D Customizer",
+    desc: "See every change in glorious 3D. Orbit, zoom, and inspect every detail of your custom creation from any angle.",
+  },
+  {
+    icon: Share2,
+    title: "Showcase & Discover",
+    desc: "Publish your designs to the community gallery. Get inspired by creators around the world and share your portfolio.",
+  },
+  {
+    icon: Sparkles,
+    title: "AI Color Inspiration",
+    desc: "Stuck on a palette? Let our Gemini AI generate professional themes based on your favorite movies, places, or photos.",
+  },
+];
+
 export default function Home() {
   return (
-    <main className="w-full">
+    <div className="pb-24">
       {/* Hero Section */}
-      <section className="w-full flex flex-col-reverse md:flex-row items-center justify-between px-4 md:px-16 py-16 gap-8 max-w-7xl mx-auto">
-        <div className="flex-1 text-center md:text-left space-y-6">
-          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-black to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
-            Custom Kicks
-          </h1>
-          <p className="text-lg md:text-2xl text-zinc-600 dark:text-zinc-300 max-w-xl">
-            Design your dream sneakers in 3D. Create, save, and share your own
-            colorways. Let AI inspire your next masterpiece.
-          </p>
-          <div className="flex flex-col md:flex-row gap-4 justify-center md:justify-start mt-8">
-            <Button asChild size="lg" className="text-lg px-8 py-6">
-              <Link to="/silhouettes">Start Customizing</Link>
-            </Button>
-            <Button
-              asChild
-              variant="secondary"
-              size="lg"
-              className="text-lg px-8 py-6"
+      <section className="relative px-6 py-20 lg:py-32 overflow-hidden">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-400/10 border border-yellow-400/20 text-yellow-500 dark:text-yellow-400 text-xs font-bold uppercase tracking-widest mb-6">
+              <Sparkles className="w-3 h-3" /> Future of Footwear
+            </div>
+            <h1 className="text-6xl lg:text-8xl font-black tracking-tight leading-none mb-8">
+              CUSTOMIZE YOUR{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-orange-500">
+                KICKS.
+              </span>
+            </h1>
+            <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-10 max-w-lg leading-relaxed">
+              Design sneakers in real-time 3D. Save unique colorways, get AI
+              inspiration, and join a global community of customizers.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to="/silhouettes"
+                className="px-8 py-4 bg-neutral-900 dark:bg-white text-white dark:text-black font-bold rounded-full hover:scale-105 transition-all flex items-center gap-2 group shadow-xl"
+              >
+                Start Designing{" "}
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link
+                to="/gallery"
+                className="px-8 py-4 bg-white dark:bg-neutral-900 border border-black/10 dark:border-white/10 text-neutral-900 dark:text-white font-bold rounded-full hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-all shadow-sm"
+              >
+                Explore Gallery
+              </Link>
+            </div>
+          </div>
+          <div className="h-[500px] lg:h-[600px] relative">
+            <div className="absolute inset-0 bg-yellow-400/10 dark:bg-yellow-400/20 blur-[120px] rounded-full translate-x-1/4 translate-y-1/4" />
+            <div className="relative w-full h-full rounded-xl overflow-hidden border border-black/5 dark:border-white/5">
+              <HomeHero3DCanvas />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="px-6 py-24 bg-neutral-100/50 dark:bg-neutral-900/50 transition-colors">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-12">
+          {FEATURES.map((f, i) => (
+            <div
+              key={i}
+              className="p-8 rounded-3xl bg-white dark:bg-neutral-900 border border-black/5 dark:border-white/5 hover:border-yellow-400/50 dark:hover:border-yellow-400/50 transition-all group shadow-sm hover:shadow-xl"
             >
-              <Link to="/gallery">Explore Gallery</Link>
-            </Button>
-          </div>
-        </div>
-        <div className="flex-1 flex items-center justify-center">
-          <div className="w-full max-w-md h-[400px] md:h-[480px] rounded-3xl shadow-2xl border-4 border-white dark:border-zinc-900 bg-white dark:bg-zinc-900">
-            <HomeHero3DCanvas />
-          </div>
-        </div>
-      </section>
-      {/* Features Section */}
-      <section className="w-full max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mt-8 px-4 pb-16">
-        <div className="rounded-2xl bg-white/80 dark:bg-zinc-900/80 shadow-lg p-6 flex flex-col items-center">
-          <span className="text-3xl mb-2">🎨</span>
-          <h2 className="font-bold text-xl mb-1">Live 3D Customizer</h2>
-          <p className="text-zinc-500 dark:text-zinc-400 text-center">
-            Update your shoe's colors in real-time 3D and save your unique
-            colorways.
-          </p>
-        </div>
-        <div className="rounded-2xl bg-white/80 dark:bg-zinc-900/80 shadow-lg p-6 flex flex-col items-center">
-          <span className="text-3xl mb-2">🌈</span>
-          <h2 className="font-bold text-xl mb-1">Showcase & Discover</h2>
-          <p className="text-zinc-500 dark:text-zinc-400 text-center">
-            Show off your creations and explore colorways made by others in the
-            community.
-          </p>
-        </div>
-        <div className="rounded-2xl bg-white/80 dark:bg-zinc-900/80 shadow-lg p-6 flex flex-col items-center">
-          <span className="text-3xl mb-2">🤖</span>
-          <h2 className="font-bold text-xl mb-1">AI Color Inspiration</h2>
-          <p className="text-zinc-500 dark:text-zinc-400 text-center">
-            Let AI generate stunning colorways for your shoes based on any theme
-            you enter.
-          </p>
+              <div className="w-12 h-12 bg-neutral-100 dark:bg-white/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-yellow-400 transition-colors">
+                <f.icon className="w-6 h-6 text-neutral-900 dark:text-white group-hover:text-black" />
+              </div>
+              <h3 className="text-xl font-bold mb-4">{f.title}</h3>
+              <p className="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed">
+                {f.desc}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
-      {/* Recent Colorways Section */}
-      <RecentColorways />
-    </main>
+
+      {/* Recent Colorways */}
+      <RecentColorways
+        title="RECENT DROPS"
+        subtitle="The latest creations from our global community."
+        viewAllHref="/gallery"
+      />
+    </div>
   );
 }

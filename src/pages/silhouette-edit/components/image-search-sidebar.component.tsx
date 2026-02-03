@@ -280,10 +280,12 @@ export function ImageSearchSidebar({
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-md p-6 overflow-y-auto">
+      <SheetContent className="w-full sm:max-w-md p-6 overflow-y-auto bg-neutral-50 dark:bg-neutral-950 border-l border-black/5 dark:border-white/10">
         <SheetHeader className="text-left px-0 pb-0">
-          <SheetTitle>Generate Theme from Image</SheetTitle>
-          <SheetDescription>
+          <SheetTitle className="text-xl font-black tracking-tighter uppercase text-neutral-900 dark:text-white">
+            Generate Theme from Image
+          </SheetTitle>
+          <SheetDescription className="text-neutral-500 dark:text-neutral-400">
             Search for an image to inspire a new colorway for your silhouette.
           </SheetDescription>
         </SheetHeader>
@@ -292,26 +294,33 @@ export function ImageSearchSidebar({
             placeholder="e.g., 'Naruto Uzumaki, Hello Kitty, etc.'"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            className="rounded-xl border-black/10 dark:border-white/10 bg-white dark:bg-neutral-900 focus-visible:border-yellow-400/50 focus-visible:ring-yellow-400/20 h-11 px-4"
           />
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+          <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-xl">
             <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
           </div>
         )}
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          {isLoading && <p className="col-span-full">Loading images...</p>}
+          {isLoading && (
+            <p className="col-span-full text-neutral-500 dark:text-neutral-400">
+              Loading images...
+            </p>
+          )}
           {searchError && (
-            <p className="col-span-full text-red-500">{searchError.message}</p>
+            <p className="col-span-full text-red-500 dark:text-red-400">
+              {searchError.message}
+            </p>
           )}
           {images.map((img) => (
             <button
               key={img.link}
               onClick={() => handleImageClick(img.link)}
               disabled={isGeneratingColorway}
-              className="aspect-square bg-gray-200 dark:bg-zinc-800 rounded-md overflow-hidden cursor-pointer transition-transform duration-200 ease-in-out hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-gray-100 dark:focus:ring-offset-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed relative"
+              className="aspect-square bg-neutral-100 dark:bg-neutral-800 rounded-xl overflow-hidden cursor-pointer transition-all duration-200 border border-black/5 dark:border-white/5 hover:border-yellow-400/50 dark:hover:border-yellow-400/50 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:ring-offset-2 focus:ring-offset-neutral-50 dark:focus:ring-offset-neutral-950 disabled:opacity-50 disabled:cursor-not-allowed relative"
             >
               <img
                 src={img.image.thumbnailLink}
@@ -319,8 +328,10 @@ export function ImageSearchSidebar({
                 className="w-full h-full object-contain"
               />
               {isGeneratingColorway && generatingImageUrl === img.link && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                  <div className="text-white text-sm">Generating...</div>
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                  <span className="text-white text-sm font-medium">
+                    Generating...
+                  </span>
                 </div>
               )}
             </button>
@@ -328,18 +339,20 @@ export function ImageSearchSidebar({
         </div>
         <div ref={ref} className="col-span-full flex justify-center py-4">
           {isFetchingNextPage ? (
-            <p>Loading more...</p>
+            <p className="text-neutral-500 dark:text-neutral-400">
+              Loading more...
+            </p>
           ) : hasNextPage ? (
             <Button
               onClick={() => fetchNextPage()}
               variant="outline"
-              className="mt-4"
+              className="mt-4 rounded-full border-black/10 dark:border-white/10 hover:border-yellow-400/50 dark:hover:border-yellow-400/50 hover:bg-yellow-400/10"
             >
               Load More
             </Button>
           ) : (
             images.length > 0 && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-neutral-500 dark:text-neutral-400">
                 You've reached the end.
               </p>
             )

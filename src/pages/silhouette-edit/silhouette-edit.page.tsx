@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import * as THREE from "three";
 import { Canvas3D } from "./components/canvas-3d.component";
@@ -212,13 +212,13 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
   };
 
   return (
-    <div className="w-full h-[calc(100vh-4rem)] flex flex-col">
+    <div className="w-full h-[calc(100vh-4rem)] flex flex-col relative top-16">
       <div className="flex-grow relative h-0">
         <div className="absolute top-8 left-8 z-10 pointer-events-none">
-          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-800 dark:text-white mix-blend-difference">
+          <h1 className="text-2xl sm:text-4xl font-black tracking-tighter uppercase text-neutral-900 dark:text-white drop-shadow-sm">
             {silhouette.name}
           </h1>
-          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mix-blend-difference">
+          <p className="text-sm sm:text-base text-neutral-500 dark:text-neutral-400 mt-1">
             Customize your silhouette
           </p>
         </div>
@@ -227,7 +227,7 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
           initialScale={silhouette.metaData?.initialScale}
         />
       </div>
-      <div className="w-full bg-white dark:bg-zinc-950 border-t border-gray-200 dark:border-zinc-800 px-8 pt-2 pb-6 shadow-lg">
+      <div className="w-full bg-neutral-50/95 dark:bg-neutral-950/95 backdrop-blur-sm border-t border-black/5 dark:border-white/10 px-8 pt-2 pb-6 shadow-[0_-4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_-4px_24px_rgba(0,0,0,0.3)]">
         <div className="flex flex-col gap-4">
           <MaterialSelector
             selectedMaterial={selectedMaterial}
@@ -243,15 +243,24 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
               onRandomize={handleRandomize}
               selectedColor={currentMaterialColor}
             />
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 variant="outline"
                 onClick={() => setIsImageSearchOpen(true)}
+                className="rounded-full border-black/10 dark:border-white/10 hover:border-yellow-400/50 dark:hover:border-yellow-400/50"
               >
                 Generate Theme
               </Button>
-              <Button variant="outline">Save as Draft</Button>
-              <Button onClick={() => setIsSaveColorwayOpen(true)}>
+              <Button
+                variant="outline"
+                className="rounded-full border-black/10 dark:border-white/10"
+              >
+                Save as Draft
+              </Button>
+              <Button
+                onClick={() => setIsSaveColorwayOpen(true)}
+                className="rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black hover:bg-yellow-500 dark:hover:bg-yellow-400 transition-colors"
+              >
                 Save Colorway
               </Button>
             </div>
@@ -277,7 +286,7 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
               type="text"
               value={colorwayName}
               onChange={(e) => setColorwayName(e.target.value)}
-              className="w-full p-2 border rounded-md dark:bg-zinc-700 dark:text-white"
+              className="w-full px-4 py-3 border border-black/10 dark:border-white/10 rounded-xl bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:border-yellow-400/50 focus:outline-none"
               placeholder="e.g., Summer Vibes"
             />
           </div>
@@ -286,12 +295,14 @@ function SilhouetteEditPageContent({ silhouette }: { silhouette: Silhouette }) {
               variant="outline"
               onClick={() => setIsSaveColorwayOpen(false)}
               disabled={saveColorwayMutation.status === "pending"}
+              className="rounded-full"
             >
               Cancel
             </Button>
             <Button
               onClick={handleSaveColorway}
               disabled={saveColorwayMutation.status === "pending"}
+              className="rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black hover:bg-yellow-500 dark:hover:bg-yellow-400"
             >
               {saveColorwayMutation.status === "pending"
                 ? "Saving..."
@@ -325,14 +336,24 @@ export default function SilhouetteEditPage() {
 
   if (isLoading)
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center min-h-[50vh] text-neutral-500 dark:text-neutral-400">
         Loading...
       </div>
     );
   if (error || !silhouette)
     return (
-      <div className="flex items-center justify-center h-screen">
-        Silhouette not found.
+      <div className="max-w-7xl mx-auto px-6 py-20">
+        <div className="text-center py-32 bg-neutral-100/50 dark:bg-neutral-900/50 rounded-[40px] border border-dashed border-black/10 dark:border-white/10">
+          <p className="text-neutral-500 dark:text-neutral-400 font-medium">
+            Silhouette not found.
+          </p>
+          <Link
+            to="/silhouettes"
+            className="inline-block mt-4 text-yellow-500 dark:text-yellow-400 font-bold hover:underline"
+          >
+            Back to silhouettes →
+          </Link>
+        </div>
       </div>
     );
 
